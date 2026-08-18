@@ -101,14 +101,19 @@ export function TurnoPanel({
       servicio_nombre: s.nombre,
       duracion_min: s.duracion_min,
       precio_lista: s.precio,
-      monto_total: montoOverride ? f?.monto_total : s.precio,
+      monto_total: s.precio,
     });
   }
-  const montoOverride = false;
 
   async function guardar() {
-    if (!f?.cliente?.trim()) return toast.error("Falta el nombre de la clienta.");
-    if (!f.servicio_id) return toast.error("Elegí un servicio.");
+    if (!f?.cliente?.trim()) {
+      toast.error("Falta el nombre de la clienta.");
+      return;
+    }
+    if (!f.servicio_id) {
+      toast.error("Elegí un servicio.");
+      return;
+    }
     const esCanje = modoPago === "canje" || !!f.es_canje;
     const monto =
       modoPago === "paga" ? Number(f.monto_total || montoCalculado || precioLista) : precioLista;
@@ -421,7 +426,7 @@ export function TurnoPanel({
                     <Label>Pagado por completo</Label>
                     <Switch
                       checked={!!f.pagado}
-                      onCheckedChange={(v) => set({ pagado: v, sena: v ? false : f.sena })}
+                      onCheckedChange={(v) => set({ pagado: v, sena: v ? false : !!f.sena })}
                     />
                   </div>
                   {f.pagado && (

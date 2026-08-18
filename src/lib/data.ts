@@ -14,8 +14,12 @@ import type {
   Turno,
 } from "./types";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Acceso genérico por nombre de tabla: el cliente tipado no admite tablas dinámicas.
+const db = supabase as any;
+
 async function selectAll<T>(table: string, order?: string): Promise<T[]> {
-  let q = supabase.from(table).select("*").eq("activo", true);
+  let q = db.from(table).select("*").eq("activo", true);
   if (order) q = q.order(order);
   const { data, error } = await q;
   if (error) throw error;
@@ -122,13 +126,13 @@ export async function auditar(
   detalle: string,
   usuario: string,
 ) {
-  await supabase
+  await db
     .from("auditoria")
     .insert({ entidad, entidad_id: entidadId, accion, detalle, usuario });
 }
 
 export async function notificar(titulo: string, cuerpo: string, tipo: string) {
-  await supabase.from("notificaciones").insert({ titulo, cuerpo, tipo });
+  await db.from("notificaciones").insert({ titulo, cuerpo, tipo });
 }
 
 type Row = Record<string, unknown>;
@@ -138,11 +142,11 @@ export function useUpsert(table: string, keys: string[]) {
   return useMutation({
     mutationFn: async ({ id, values }: { id?: string | null; values: Row }) => {
       if (id) {
-        const { error } = await supabase.from(table).update(values).eq("id", id);
+        const { error } = await db.from(table).update(values).eq("id", id);
         if (error) throw error;
         return id;
       }
-      const { data, error } = await supabase.from(table).insert(values).select("id").single();
+      const { data, error } = await db.from(table).insert(values).select("id").single();
       if (error) throw error;
       return (data as { id: string }).id;
     },
@@ -154,7 +158,7 @@ export function useSoftDelete(table: string, keys: string[]) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from(table).update({ activo: false }).eq("id", id);
+      const { error } = await db.from(table).update({ activo: false }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => keys.forEach((k) => qc.invalidateQueries({ queryKey: [k] })),

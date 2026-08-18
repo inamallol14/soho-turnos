@@ -37,8 +37,9 @@ export const guardarPin = createServerFn({ method: "POST" })
     }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     if (data.id) {
-      const patch: Record<string, unknown> = { nombre: data.nombre, rol: data.rol };
-      if (pin) patch["pin"] = pin;
+      const patch = pin
+        ? { nombre: data.nombre, rol: data.rol, pin }
+        : { nombre: data.nombre, rol: data.rol };
       const { error } = await supabaseAdmin.from("personas").update(patch).eq("id", data.id);
       if (error) return { ok: false as const, error: error.message };
     } else {

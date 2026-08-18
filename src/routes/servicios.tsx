@@ -150,7 +150,10 @@ function Servicios() {
         <Button
           className="tap mt-3"
           onClick={async () => {
-            if (!nuevo.nombre || !nuevo.modalidad) return toast.error("Falta modalidad o nombre.");
+            if (!nuevo.nombre || !nuevo.modalidad) {
+              toast.error("Falta modalidad o nombre.");
+              return;
+            }
             await upsert.mutateAsync({ values: { ...nuevo } });
             setNuevo({ modalidad: "", nombre: "", duracion_min: 60, precio: 0 });
             toast.success("Servicio agregado");

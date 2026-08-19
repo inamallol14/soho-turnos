@@ -1,5 +1,7 @@
 import { requireAdmin, verificarToken, type Sesion } from "./session.server";
 
+export type Json = string | number | boolean | null;
+
 type Acceso = "staff" | "admin";
 type Regla = { read: Acceso; write: Acceso; insert?: Acceso; columnas?: string };
 
@@ -56,17 +58,17 @@ export async function listar(input: ListaInput) {
   if (input.limit) q = q.limit(input.limit);
   const { data, error } = await q;
   if (error) throw new Error("No pudimos leer los datos.");
-  return (data ?? []) as Record<string, unknown>[];
+  return (data ?? []) as Record<string, Json>[];
 }
 
 export type EscrituraInput = {
   token?: string;
   table: string;
   id?: string | null;
-  values: Record<string, unknown>;
+  values: Record<string, Json>;
 };
 
-function limpiar(table: string, values: Record<string, unknown>) {
+function limpiar(table: string, values: Record<string, Json>) {
   const v = { ...values };
   // El PIN nunca se escribe por esta vía: se gestiona en auth.functions.ts.
   if (table === "personas") delete v["pin"];
@@ -91,7 +93,7 @@ export async function guardar(input: EscrituraInput) {
 export async function insertarVarios(input: {
   token?: string;
   table: string;
-  rows: Record<string, unknown>[];
+  rows: Record<string, Json>[];
 }) {
   const r = regla(input.table);
   checkear(input.token, r.insert ?? r.write);

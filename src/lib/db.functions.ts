@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import type { EscrituraInput, ListaInput } from "./db.server";
+import type { EscrituraInput, Json, ListaInput } from "./db.server";
 
 export const dbListar = createServerFn({ method: "POST" })
   .inputValidator((input: ListaInput) => input)
@@ -16,7 +16,7 @@ export const dbGuardar = createServerFn({ method: "POST" })
   });
 
 export const dbInsertarVarios = createServerFn({ method: "POST" })
-  .inputValidator((input: { token?: string; table: string; rows: Record<string, unknown>[] }) => input)
+  .inputValidator((input: { token?: string; table: string; rows: Record<string, Json>[] }) => input)
   .handler(async ({ data }) => {
     const { insertarVarios } = await import("./db.server");
     return insertarVarios(data);

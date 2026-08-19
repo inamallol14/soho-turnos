@@ -11,9 +11,9 @@ import {
   useTurnos,
   useUpsert,
   auditar,
+  insertarFilas,
   notificar,
 } from "@/lib/data";
-import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
@@ -113,7 +113,8 @@ function Paquetes() {
         fecha_compra: toISO(new Date()),
       },
     });
-    await supabase.from("paquetes_detalle").insert(
+    await insertarFilas(
+      "paquetes_detalle",
       lineas.map((l) => ({
         paquete_id: id,
         servicio_id: l.servicio_id,

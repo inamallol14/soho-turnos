@@ -1,12 +1,13 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Persona } from "./types";
+import { clearToken, setToken } from "./token";
 
 type Sesion = Pick<Persona, "id" | "nombre" | "rol">;
 
 type Ctx = {
   sesion: Sesion | null;
   cargando: boolean;
-  entrar: (s: Sesion) => void;
+  entrar: (s: Sesion, token: string) => void;
   salir: () => void;
   esAdmin: boolean;
 };
@@ -40,12 +41,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       sesion,
       cargando,
       esAdmin: sesion?.rol === "admin",
-      entrar: (s) => {
+      entrar: (s, token) => {
         localStorage.setItem(KEY, JSON.stringify(s));
+        setToken(token);
         setSesion(s);
       },
       salir: () => {
         localStorage.removeItem(KEY);
+        clearToken();
         setSesion(null);
       },
     }),

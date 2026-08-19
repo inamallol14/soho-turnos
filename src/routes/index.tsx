@@ -48,7 +48,7 @@ function Login() {
       setError(res.error);
       return;
     }
-    entrar(res.persona);
+    entrar(res.persona, res.token);
     navigate({ to: "/calendario" });
   }
 

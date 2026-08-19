@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useRef, useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { useClientes, useSoftDelete, useTurnos, useUpsert } from "@/lib/data";
-import { supabase } from "@/integrations/supabase/client";
+import { guardarFila, useClientes, useSoftDelete, useTurnos, useUpsert } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -83,10 +82,10 @@ function Clientes() {
       };
       const ex = clientes.find((c) => c.nombre.toLowerCase() === nombre.toLowerCase());
       if (ex) {
-        await supabase.from("clientes").update(values).eq("id", ex.id);
+        await guardarFila("clientes", ex.id, values);
         actualizados++;
       } else {
-        await supabase.from("clientes").insert(values);
+        await guardarFila("clientes", null, values);
         creados++;
       }
     }

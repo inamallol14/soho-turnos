@@ -56,7 +56,7 @@ export async function listar(input: ListaInput) {
   if (input.limit) q = q.limit(input.limit);
   const { data, error } = await q;
   if (error) throw new Error("No pudimos leer los datos.");
-  return (data ?? []) as unknown[];
+  return (data ?? []) as Record<string, unknown>[];
 }
 
 export type EscrituraInput = {

@@ -1,8 +1,8 @@
 const TOKEN_KEY = "sohobox.token";
 
-export function getToken(): string | undefined {
-  if (typeof window === "undefined") return undefined;
-  return localStorage.getItem(TOKEN_KEY) ?? undefined;
+export function getToken(): string {
+  if (typeof window === "undefined") return "";
+  return localStorage.getItem(TOKEN_KEY) ?? "";
 }
 
 export function setToken(token: string) {

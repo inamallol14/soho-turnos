@@ -1,0 +1,47 @@
+DROP POLICY IF EXISTS auditoria_all ON public.auditoria;
+DROP POLICY IF EXISTS clientes_all ON public.clientes;
+DROP POLICY IF EXISTS horarios_all ON public.horarios;
+DROP POLICY IF EXISTS notificaciones_all ON public.notificaciones;
+DROP POLICY IF EXISTS pagos_liquidacion_all ON public.pagos_liquidacion;
+DROP POLICY IF EXISTS paquetes_all ON public.paquetes;
+DROP POLICY IF EXISTS paquetes_detalle_all ON public.paquetes_detalle;
+DROP POLICY IF EXISTS reparto_all ON public.reparto;
+DROP POLICY IF EXISTS servicios_all ON public.servicios;
+DROP POLICY IF EXISTS turnos_all ON public.turnos;
+DROP POLICY IF EXISTS personas_read ON public.personas;
+
+REVOKE ALL ON public.auditoria FROM anon, authenticated;
+REVOKE ALL ON public.clientes FROM anon, authenticated;
+REVOKE ALL ON public.horarios FROM anon, authenticated;
+REVOKE ALL ON public.notificaciones FROM anon, authenticated;
+REVOKE ALL ON public.pagos_liquidacion FROM anon, authenticated;
+REVOKE ALL ON public.paquetes FROM anon, authenticated;
+REVOKE ALL ON public.paquetes_detalle FROM anon, authenticated;
+REVOKE ALL ON public.personas FROM anon, authenticated;
+REVOKE ALL ON public.reparto FROM anon, authenticated;
+REVOKE ALL ON public.servicios FROM anon, authenticated;
+REVOKE ALL ON public.turnos FROM anon, authenticated;
+
+ALTER TABLE public.auditoria ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.clientes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.horarios ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.notificaciones ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.pagos_liquidacion ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.paquetes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.paquetes_detalle ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.personas ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.reparto ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.servicios ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.turnos ENABLE ROW LEVEL SECURITY;
+
+GRANT ALL ON public.auditoria TO service_role;
+GRANT ALL ON public.clientes TO service_role;
+GRANT ALL ON public.horarios TO service_role;
+GRANT ALL ON public.notificaciones TO service_role;
+GRANT ALL ON public.pagos_liquidacion TO service_role;
+GRANT ALL ON public.paquetes TO service_role;
+GRANT ALL ON public.paquetes_detalle TO service_role;
+GRANT ALL ON public.personas TO service_role;
+GRANT ALL ON public.reparto TO service_role;
+GRANT ALL ON public.servicios TO service_role;
+GRANT ALL ON public.turnos TO service_role;

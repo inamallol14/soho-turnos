@@ -11,9 +11,9 @@ import {
   useTurnos,
   useUpsert,
   auditar,
+  insertarFilas,
   notificar,
 } from "@/lib/data";
-import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";

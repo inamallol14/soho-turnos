@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { useServicios, useSoftDelete, useUpsert } from "@/lib/data";
-import { supabase } from "@/integrations/supabase/client";
+import { guardarFila, useServicios, useSoftDelete, useUpsert } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

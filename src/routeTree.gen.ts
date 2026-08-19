@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as CalendarioRouteImport } from './routes/calendario'
 import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as PaquetesRouteImport } from './routes/paquetes'
 import { Route as PrestadoresRouteImport } from './routes/prestadores'
 import { Route as ServiciosRouteImport } from './routes/servicios'
 
@@ -36,6 +37,11 @@ const ClientesRoute = ClientesRouteImport.update({
   path: '/clientes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaquetesRoute = PaquetesRouteImport.update({
+  id: '/paquetes',
+  path: '/paquetes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrestadoresRoute = PrestadoresRouteImport.update({
   id: '/prestadores',
   path: '/prestadores',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/agenda': typeof AgendaRoute
   '/calendario': typeof CalendarioRoute
   '/clientes': typeof ClientesRoute
+  '/paquetes': typeof PaquetesRoute
   '/prestadores': typeof PrestadoresRoute
   '/servicios': typeof ServiciosRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/agenda': typeof AgendaRoute
   '/calendario': typeof CalendarioRoute
   '/clientes': typeof ClientesRoute
+  '/paquetes': typeof PaquetesRoute
   '/prestadores': typeof PrestadoresRoute
   '/servicios': typeof ServiciosRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/agenda': typeof AgendaRoute
   '/calendario': typeof CalendarioRoute
   '/clientes': typeof ClientesRoute
+  '/paquetes': typeof PaquetesRoute
   '/prestadores': typeof PrestadoresRoute
   '/servicios': typeof ServiciosRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/calendario'
     | '/clientes'
+    | '/paquetes'
     | '/prestadores'
     | '/servicios'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/calendario'
     | '/clientes'
+    | '/paquetes'
     | '/prestadores'
     | '/servicios'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/calendario'
     | '/clientes'
+    | '/paquetes'
     | '/prestadores'
     | '/servicios'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   AgendaRoute: typeof AgendaRoute
   CalendarioRoute: typeof CalendarioRoute
   ClientesRoute: typeof ClientesRoute
+  PaquetesRoute: typeof PaquetesRoute
   PrestadoresRoute: typeof PrestadoresRoute
   ServiciosRoute: typeof ServiciosRoute
 }
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/paquetes': {
+      id: '/paquetes'
+      path: '/paquetes'
+      fullPath: '/paquetes'
+      preLoaderRoute: typeof PaquetesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prestadores': {
       id: '/prestadores'
       path: '/prestadores'
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgendaRoute: AgendaRoute,
   CalendarioRoute: CalendarioRoute,
   ClientesRoute: ClientesRoute,
+  PaquetesRoute: PaquetesRoute,
   PrestadoresRoute: PrestadoresRoute,
   ServiciosRoute: ServiciosRoute,
 }

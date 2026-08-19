@@ -76,10 +76,10 @@ function Servicios() {
         precio: num(f["precio"]),
       };
       if (existente) {
-        await supabase.from("servicios").update(values).eq("id", existente.id);
+        await guardarFila("servicios", existente.id, values);
         actualizados++;
       } else {
-        await supabase.from("servicios").insert(values);
+        await guardarFila("servicios", null, values);
         creados++;
       }
     }

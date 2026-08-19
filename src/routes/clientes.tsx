@@ -83,10 +83,10 @@ function Clientes() {
       };
       const ex = clientes.find((c) => c.nombre.toLowerCase() === nombre.toLowerCase());
       if (ex) {
-        await supabase.from("clientes").update(values).eq("id", ex.id);
+        await guardarFila("clientes", ex.id, values);
         actualizados++;
       } else {
-        await supabase.from("clientes").insert(values);
+        await guardarFila("clientes", null, values);
         creados++;
       }
     }

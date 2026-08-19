@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { guardarFila } from "@/lib/data";
 import { useQueryClient } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -27,15 +27,13 @@ export function ClienteInput({
   const existe = clientes.some((c) => c.nombre.toLowerCase() === nombre.trim().toLowerCase());
 
   async function crear() {
-    const { data, error } = await supabase
-      .from("clientes")
-      .insert({ nombre: nombre.trim() })
-      .select("id")
-      .single();
-    if (!error && data) {
-      onPick({ nombre: nombre.trim(), clienteId: data.id });
+    try {
+      const id = await guardarFila("clientes", null, { nombre: nombre.trim() });
+      onPick({ nombre: nombre.trim(), clienteId: id });
       qc.invalidateQueries({ queryKey: ["clientes"] });
       setOpen(false);
+    } catch {
+      /* ignore */
     }
   }
 

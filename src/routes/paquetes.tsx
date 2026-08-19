@@ -113,7 +113,8 @@ function Paquetes() {
         fecha_compra: toISO(new Date()),
       },
     });
-    await supabase.from("paquetes_detalle").insert(
+    await insertarFilas(
+      "paquetes_detalle",
       lineas.map((l) => ({
         paquete_id: id,
         servicio_id: l.servicio_id,

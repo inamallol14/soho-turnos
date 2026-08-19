@@ -53,7 +53,7 @@ export const Route = createFileRoute("/paquetes")({
 type Linea = { servicio_id: string; servicio_nombre: string; cantidad: number; precio: number };
 
 function Paquetes() {
-  const { persona } = useAuth();
+  const { sesion } = useAuth();
   const { data: paquetes = [] } = usePaquetes();
   const { data: detalle = [] } = usePaquetesDetalle();
   const { data: servicios = [] } = useServicios();
@@ -126,7 +126,7 @@ function Paquetes() {
       id,
       "crear",
       `Paquete de ${cliente.nombre} · ${lineas.reduce((a, l) => a + l.cantidad, 0)} sesiones`,
-      persona?.nombre ?? "",
+      sesion?.nombre ?? "",
     );
     qc.invalidateQueries({ queryKey: ["paquetes_detalle"] });
     toast.success("Paquete creado");

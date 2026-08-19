@@ -65,7 +65,7 @@ function Agenda() {
             {lista.map((t) => (
               <tr
                 key={t.id}
-                onClick={() => abrir(t as never)}
+                onClick={() => abrir(t)}
                 className="cursor-pointer border-t hover:bg-accent/40"
               >
                 <td className="px-3 py-2">{fmtFecha(t.fecha)}</td>
@@ -92,7 +92,7 @@ function Agenda() {
         {lista.map((t) => (
           <button
             key={t.id}
-            onClick={() => abrir(t as never)}
+            onClick={() => abrir(t)}
             className="block w-full rounded-xl border bg-card p-3 text-left"
           >
             <div className="flex items-center justify-between">

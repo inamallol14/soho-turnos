@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as CalendarioRouteImport } from './routes/calendario'
 import { Route as ClientesRouteImport } from './routes/clientes'
+import { Route as LiquidacionRouteImport } from './routes/liquidacion'
 import { Route as PaquetesRouteImport } from './routes/paquetes'
 import { Route as PrestadoresRouteImport } from './routes/prestadores'
 import { Route as ServiciosRouteImport } from './routes/servicios'
@@ -37,6 +38,11 @@ const ClientesRoute = ClientesRouteImport.update({
   path: '/clientes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LiquidacionRoute = LiquidacionRouteImport.update({
+  id: '/liquidacion',
+  path: '/liquidacion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PaquetesRoute = PaquetesRouteImport.update({
   id: '/paquetes',
   path: '/paquetes',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/agenda': typeof AgendaRoute
   '/calendario': typeof CalendarioRoute
   '/clientes': typeof ClientesRoute
+  '/liquidacion': typeof LiquidacionRoute
   '/paquetes': typeof PaquetesRoute
   '/prestadores': typeof PrestadoresRoute
   '/servicios': typeof ServiciosRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/agenda': typeof AgendaRoute
   '/calendario': typeof CalendarioRoute
   '/clientes': typeof ClientesRoute
+  '/liquidacion': typeof LiquidacionRoute
   '/paquetes': typeof PaquetesRoute
   '/prestadores': typeof PrestadoresRoute
   '/servicios': typeof ServiciosRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/agenda': typeof AgendaRoute
   '/calendario': typeof CalendarioRoute
   '/clientes': typeof ClientesRoute
+  '/liquidacion': typeof LiquidacionRoute
   '/paquetes': typeof PaquetesRoute
   '/prestadores': typeof PrestadoresRoute
   '/servicios': typeof ServiciosRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/calendario'
     | '/clientes'
+    | '/liquidacion'
     | '/paquetes'
     | '/prestadores'
     | '/servicios'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/calendario'
     | '/clientes'
+    | '/liquidacion'
     | '/paquetes'
     | '/prestadores'
     | '/servicios'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/agenda'
     | '/calendario'
     | '/clientes'
+    | '/liquidacion'
     | '/paquetes'
     | '/prestadores'
     | '/servicios'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AgendaRoute: typeof AgendaRoute
   CalendarioRoute: typeof CalendarioRoute
   ClientesRoute: typeof ClientesRoute
+  LiquidacionRoute: typeof LiquidacionRoute
   PaquetesRoute: typeof PaquetesRoute
   PrestadoresRoute: typeof PrestadoresRoute
   ServiciosRoute: typeof ServiciosRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/liquidacion': {
+      id: '/liquidacion'
+      path: '/liquidacion'
+      fullPath: '/liquidacion'
+      preLoaderRoute: typeof LiquidacionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/paquetes': {
       id: '/paquetes'
       path: '/paquetes'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgendaRoute: AgendaRoute,
   CalendarioRoute: CalendarioRoute,
   ClientesRoute: ClientesRoute,
+  LiquidacionRoute: LiquidacionRoute,
   PaquetesRoute: PaquetesRoute,
   PrestadoresRoute: PrestadoresRoute,
   ServiciosRoute: ServiciosRoute,

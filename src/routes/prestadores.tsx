@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
-import { usePersonas, useReparto, useServicios, useSoftDelete, useUpsert } from "@/lib/data";
+import { usePersonas, useReparto, useServicios, useUpsert } from "@/lib/data";
+import { bajaPersona, guardarPin } from "@/lib/auth.functions";
+import { getToken } from "@/lib/token";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,8 +39,8 @@ function Prestadores() {
   const { data: personas = [] } = usePersonas();
   const { data: servicios = [] } = useServicios();
   const { data: reparto = [] } = useReparto();
-  const upPersona = useUpsert("personas", ["personas"]);
-  const delPersona = useSoftDelete("personas", ["personas"]);
+  const qc = useQueryClient();
+  const refrescar = () => qc.invalidateQueries({ queryKey: ["personas"] });
   const upReparto = useUpsert("reparto", ["reparto"]);
 
   const modalidades = Array.from(new Set(servicios.map((s) => s.modalidad))).sort();
@@ -89,8 +92,20 @@ function Prestadores() {
               toast.error("Nombre y PIN de 4 a 6 dígitos.");
               return;
             }
-            await upPersona.mutateAsync({ values: { ...nueva, nombre: nueva.nombre.trim() } });
+            const res = await guardarPin({
+              data: {
+                token: getToken(),
+                nombre: nueva.nombre.trim(),
+                rol: nueva.rol,
+                pin: nueva.pin,
+              },
+            });
+            if (!res.ok) {
+              toast.error(res.error);
+              return;
+            }
             setNueva({ nombre: "", rol: "prestador", pin: "" });
+            refrescar();
             toast.success("Persona agregada");
           }}
         >
@@ -116,15 +131,21 @@ function Prestadores() {
                 className="h-11 w-32"
                 inputMode="numeric"
                 placeholder="Nuevo PIN"
-                onBlur={(e) => {
+                onBlur={async (e) => {
                   const pin = e.target.value.replace(/\D/g, "");
                   if (!pin) return;
                   if (pin.length < 4 || pin.length > 6) {
                     toast.error("El PIN debe tener de 4 a 6 dígitos.");
                     return;
                   }
-                  upPersona.mutate({ id: p.id, values: { pin } });
+                  const res = await guardarPin({
+                    data: { token: getToken(), id: p.id, nombre: p.nombre, rol: p.rol, pin },
+                  });
                   e.target.value = "";
+                  if (!res.ok) {
+                    toast.error(res.error);
+                    return;
+                  }
                   toast.success("PIN actualizado");
                 }}
               />
@@ -132,7 +153,10 @@ function Prestadores() {
                 variant="ghost"
                 size="icon"
                 className="tap text-destructive"
-                onClick={() => delPersona.mutate(p.id)}
+                onClick={async () => {
+                  await bajaPersona({ data: { token: getToken(), id: p.id } });
+                  refrescar();
+                }}
               >
                 <Trash2 className="size-4" />
               </Button>

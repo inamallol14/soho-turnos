@@ -70,28 +70,35 @@ function Clientes() {
   async function importar(file: File) {
     const filas = parseCSV(await file.text());
     let creados = 0,
-      actualizados = 0;
+      actualizados = 0,
+      fallidos = 0;
     for (const f of filas) {
-      const nombre = f["nombre"] ?? "";
+      const nombre = (f["nombre"] ?? f["\ufeffnombre"] ?? "").trim();
       if (!nombre) continue;
       const values = {
         nombre,
-        telefono: f["telefono"] ?? f["teléfono"] ?? null,
-        email: f["email"] ?? null,
-        notas: f["notas"] ?? null,
+        telefono: f["telefono"] || f["teléfono"] || null,
+        email: f["email"] || null,
+        notas: f["notas"] || null,
       };
       const ex = clientes.find((c) => c.nombre.toLowerCase() === nombre.toLowerCase());
-      if (ex) {
-        await guardarFila("clientes", ex.id, values);
-        actualizados++;
-      } else {
-        await guardarFila("clientes", null, values);
-        creados++;
+      try {
+        if (ex) {
+          await guardarFila("clientes", ex.id, values);
+          actualizados++;
+        } else {
+          await guardarFila("clientes", null, values);
+          creados++;
+        }
+      } catch {
+        fallidos++;
       }
     }
-    qc.invalidateQueries({ queryKey: ["clientes"] });
+    await qc.invalidateQueries({ queryKey: ["clientes"] });
+    if (fallidos > 0) toast.error(`${fallidos} filas no se pudieron importar`);
     toast.success(`${actualizados} actualizados · ${creados} nuevos`);
   }
+
 
   return (
     <div className="space-y-4">
